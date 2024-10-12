@@ -1,7 +1,10 @@
-<script setup lang="ts">
-import Home from './components/Home/Home.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <Home />
+  <div className="flex justify-between p-5">
+    <RouterLink to="/">Go to Home</RouterLink>
+    <RouterLink to="/orders">Go to Orders</RouterLink>
+    <RouterLink to="/users">Go to Users</RouterLink>
+  </div>
+  <RouterView />
 </template>
