@@ -3,5 +3,5 @@ import Home from './components/Home/Home.vue'
 </script>
 
 <template>
-  <Home msg="Vite + Vue" />
+  <Home />
 </template>
