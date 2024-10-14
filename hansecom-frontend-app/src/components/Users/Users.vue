@@ -1,23 +1,26 @@
 <template>
   <div className="text-center">
     <h1>User List</h1>
-    <Loader v-if="isLoading" />
     <!-- Show loader if loading -->
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <Loader v-if="isLoading" />
     <!-- Show error message -->
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     <ul v-else>
       <li v-for="user in users" :key="user.id">{{ user.fullName }} - {{ user.email }}</li>
     </ul>
   </div>
+  <UserForm />
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Loader from '../Loader/Loader.vue' // Import the Loader component
+import Loader from '../Loader/Loader.vue'
+import UserForm from './UserForm/UserForm.vue'
 
 export default {
   components: {
     Loader,
+    UserForm,
   },
   computed: {
     ...mapState(['users', 'error']), // Map users and errors from Vuex state to the component

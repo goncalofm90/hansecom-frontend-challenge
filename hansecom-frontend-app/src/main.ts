@@ -16,34 +16,54 @@ const store = createStore<State>({
     }
   },
   mutations: {
-    setUsers(state, users) {
+    SET_USERS(state, users) {
       state.users = users // Mutation to set users in the state
     },
-    setLoading(state, loading) {
+    ADD_USER(state, user) {
+      state.users.push(user)
+    },
+    SET_LOADING_USERS(state, loading) {
       state.isLoading = loading // Mutation to set loading state
     },
-    setError(state, error) {
+    SET_ERROR_USERS(state, error) {
       state.error = error // Mutation to set error message
     },
-    clearError(state) {
+    CLEAR_ERROR_USERS(state) {
       state.error = null // Mutation to clear the error message
     },
   },
   actions: {
     async fetchUsers({ commit }) {
-      commit('setLoading', true) // Set loading to true before the API call
-      commit('clearError') // Clear any existing error message
+      commit('SET_LOADING_USERS', true) // Set loading to true before the API call
+      commit('CLEAR_ERROR_USERS') // Clear any existing error message
       try {
         const response = await axios.get<User[]>('http://localhost:3333/users')
-        commit('setUsers', response.data) // Commit the mutation with fetched users
+        commit('SET_USERS', response.data) // Commit the mutation with fetched users
       } catch (error) {
         const err = error as AxiosError
         console.error(err)
         // Commit the error message if the API call fails
-        commit('setError', 'We apologize. There was an error fetching the user list.')
+        commit('SET_ERROR_USERS', 'We apologize. There was an error fetching the user list.')
       } finally {
-        commit('setLoading', false) // Set loading to false after the API call
+        commit('SET_LOADING_USERS', false) // Set loading to false after the API call
       }
+    },
+    createUser({ commit }, user) {
+      commit('SET_LOADING_USERS', true)
+      return axios
+        .post('http://localhost:3323/users', user)
+        .then((response) => {
+          commit('ADD_USER', response.data) // Assuming the server responds with the created user
+        })
+        .catch((error) => {
+          commit(
+            'SET_ERROR_USERS',
+            `The following error occurred while creating your user: ${error.message}`
+          )
+        })
+        .finally(() => {
+          commit('SET_LOADING_USERS', false)
+        })
     },
   },
   getters: {
