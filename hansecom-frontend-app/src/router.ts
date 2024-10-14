@@ -1,5 +1,4 @@
-import { createWebHistory, createRouter } from 'vue-router'
-import { RouteRecordRaw } from 'vue-router'
+import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -15,10 +14,15 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('./components/Orders/Orders.vue'),
   },
   {
-    path: '/Users',
-    alias: '/Users',
+    path: '/users',
+    alias: '/users',
     name: 'Users',
     component: () => import('./components/Users/Users.vue'),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('./components/NotFound/NotFound.vue'),
   },
 ]
 

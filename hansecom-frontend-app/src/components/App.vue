@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <div className="flex justify-between p-5">
     <RouterLink to="/">Go to Home</RouterLink>
@@ -8,3 +6,5 @@
   </div>
   <RouterView />
 </template>
+
+<script setup lang="ts"></script>
