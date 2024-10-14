@@ -48,10 +48,10 @@ const store = createStore<State>({
         commit('SET_LOADING_USERS', false) // Set loading to false after the API call
       }
     },
-    createUser({ commit }, user) {
+    async createUser({ commit }, user) {
       commit('SET_LOADING_USERS', true)
       return axios
-        .post('http://localhost:3323/users', user)
+        .post('http://localhost:3333/users', user)
         .then((response) => {
           commit('ADD_USER', response.data) // Assuming the server responds with the created user
         })
@@ -64,6 +64,20 @@ const store = createStore<State>({
         .finally(() => {
           commit('SET_LOADING_USERS', false)
         })
+    },
+    async deleteUser({ commit }, userId) {
+      commit('SET_LOADING_USERS', true)
+      try {
+        await axios.delete(`http://localhost:3333/users/${userId}`)
+        commit(
+          'SET_USERS',
+          this.state.users.filter((user) => user.id !== userId)
+        ) // Remove the user from the store
+      } catch (error) {
+        commit('SET_ERROR_USERS', 'Failed to delete user.')
+      } finally {
+        commit('SET_LOADING_USERS', false)
+      }
     },
   },
   getters: {
