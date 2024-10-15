@@ -37,10 +37,6 @@ export default {
       type: Function,
       required: false,
     },
-    clearForm: {
-      type: Function,
-      required: false,
-    },
     isVisible: {
       type: Boolean,
       required: true,
@@ -59,7 +55,19 @@ export default {
       return this.$store.getters.errorMessage
     },
   },
+  data() {
+    return {
+      fullName: '',
+      email: '',
+      password: '',
+    }
+  },
   methods: {
+    resetForm() {
+      this.fullName = ''
+      this.email = ''
+      this.password = ''
+    },
     submitForm() {
       const user = {
         fullName: this.fullName,
@@ -68,7 +76,7 @@ export default {
       }
 
       this.$store.dispatch('createUser', user).then(() => {
-        this.clearForm()
+        this.resetForm()
         this.closeCreateModal()
       })
     },

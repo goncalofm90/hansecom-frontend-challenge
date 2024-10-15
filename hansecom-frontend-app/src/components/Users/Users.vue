@@ -1,7 +1,15 @@
 <template>
   <div class="text-center text-2xl"><RouterLink to="/">Home</RouterLink></div>
   <div className="p-10">
-    <h1>User List</h1>
+    <div class="flex justify-between">
+      <h1 class="font-bold text-2xl"><span class="pi pi-user"></span> User List</h1>
+      <button
+        class="text-white bg-black font-bold md:px-1 rounded p-2 ms-5"
+        @click="openCreateModal()"
+      >
+        Create User
+      </button>
+    </div>
     <!-- Show loader if loading -->
     <Loader v-if="isLoading" />
     <!-- Show error message -->
@@ -24,13 +32,13 @@
           </p>
           <button
             class="text-black hover:bg-yellow-500 hover:text-white font-bold md:px-1 rounded p-2 ms-5"
-            @click="openConfirmationModal(user.id, false)"
+            @click="openConfirmationModal(user.id, user.fullName, user.email, false)"
           >
             <span class="pi pi-user-edit"></span>
           </button>
           <button
             class="text-black hover:text-white hover:bg-red-700 font-bold md:px-1 rounded p-2 ms-5"
-            @click="openConfirmationModal(user.id, true)"
+            @click="openConfirmationModal(user.id, user.fullName, user.email, true)"
           >
             <span class="pi pi-trash"></span>
           </button>
@@ -40,26 +48,18 @@
     <ConfirmationModal
       :isVisible="isModalVisible"
       :userId="userId"
+      :fullName="fullName"
+      :email="email"
       :isDeleteAction="isDeleteAction"
       :onConfirm="confirmAction"
       :onCancel="closeConfirmationModal"
-      :clearForm="clearForm"
       :handleClickOutside="handleClickOutside"
     />
-  </div>
-  <div class="text-center">
-    <button
-      class="text-white bg-black font-bold md:px-1 rounded p-2 ms-5"
-      @click="openCreateModal()"
-    >
-      Create User
-    </button>
   </div>
   <div>
     <CreateUserModal
       :isVisible="isCreateModalVisible"
       :closeCreateModal="closeCreateModal"
-      :clearForm="clearForm"
       :handleClickOutside="handleClickOutside"
     />
   </div>
@@ -102,12 +102,10 @@ export default {
     this.$store.dispatch('fetchUsers')
   },
   methods: {
-    clearForm() {
-      this.fullName = ''
-      this.email = ''
-    },
-    openConfirmationModal(userId, isDeleteAction) {
+    openConfirmationModal(userId, fullName, email, isDeleteAction) {
       this.userId = userId
+      this.fullName = fullName
+      this.email = email
       this.isDeleteAction = isDeleteAction
       this.isModalVisible = true
     },
@@ -133,7 +131,6 @@ export default {
         this.$store.dispatch('deleteUser', userId)
       } else {
         this.$store.dispatch('editUser', { userId, updatedUser })
-        this.clearForm()
         this.$store.dispatch('fetchUsers')
       }
       this.closeConfirmationModal()

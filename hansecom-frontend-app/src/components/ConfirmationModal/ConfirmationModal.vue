@@ -10,11 +10,11 @@
         <div v-if="!isDeleteAction" class="flex flex-col">
           <label class="py-5">
             Full Name:
-            <input v-model="fullName" type="text" />
+            <input v-model="localFullName" type="text" />
           </label>
           <label>
             Email:
-            <input v-model="email" type="email" />
+            <input v-model="localEmail" type="email" />
           </label>
         </div>
       </div>
@@ -38,14 +38,18 @@ export default {
       type: Function,
       required: false,
     },
-    clearForm: {
-      type: Function,
-      required: false,
-    },
     userId: {
       type: [Number, null],
       required: true,
       default: 0,
+    },
+    fullName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
     },
     isDeleteAction: {
       type: Boolean,
@@ -62,19 +66,29 @@ export default {
   },
   data() {
     return {
-      fullName: '',
-      email: '',
-      password: '',
+      localFullName: this.fullName,
+      localEmail: this.email,
     }
+  },
+  watch: {
+    fullName(newVal) {
+      this.localFullName = newVal
+    },
+    email(newVal) {
+      this.localEmail = newVal
+    },
   },
   methods: {
     confirmAction() {
       if (this.isDeleteAction) {
         this.onConfirm(this.userId)
       } else {
-        const updatedUser = { fullName: this.fullName, email: this.email, date: Date.now() }
+        const updatedUser = {
+          fullName: this.localFullName,
+          email: this.localEmail,
+          date: Date.now(),
+        }
         this.onConfirm(this.userId, updatedUser)
-        this.clearForm()
       }
     },
     cancelAction() {
