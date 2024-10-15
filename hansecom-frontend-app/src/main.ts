@@ -31,6 +31,12 @@ const store = createStore<State>({
     CLEAR_ERROR_USERS(state) {
       state.error = null // Mutation to clear the error message
     },
+    UPDATE_USER(state, updatedUser) {
+      const index = state.users.findIndex((user) => user.id === updatedUser.id)
+      if (index !== -1) {
+        state.users.splice(index, 1, updatedUser)
+      }
+    },
   },
   actions: {
     async fetchUsers({ commit }) {
@@ -79,13 +85,28 @@ const store = createStore<State>({
         commit('SET_LOADING_USERS', false)
       }
     },
+    async editUser({ commit }, { userId, updatedUser }) {
+      commit('SET_LOADING_USERS', true)
+      try {
+        const response = await axios.put(`http://localhost:3333/user/${userId}/edit`, updatedUser)
+
+        commit('UPDATE_USER', response.data)
+        commit('SET_USERS', response.data)
+      } catch (error) {
+        const err = error as AxiosError
+        console.error(err)
+        commit('SET_ERROR_USERS', `An error occurred while updating the user.`)
+      } finally {
+        commit('SET_LOADING_USERS', false)
+      }
+    },
   },
   getters: {
     usersList(state) {
-      return state.users // Optional getter to access users
+      return state.users
     },
     errorMessage(state) {
-      return state.error // Getter to access error message
+      return state.error
     },
   },
 })

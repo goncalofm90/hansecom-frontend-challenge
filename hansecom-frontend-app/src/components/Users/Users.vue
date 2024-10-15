@@ -23,8 +23,14 @@
             <time datetime="2023-01-23T13:23Z">{{ new Date(user.createdAt).toDateString() }} </time>
           </p>
           <button
-            class="text-black hover:bg-red-700 text-white font-bold md:px-1 rounded p-2 ms-5"
-            @click="openConfirmationModal(user.id)"
+            class="text-black hover:bg-yellow-500 hover:text-white font-bold md:px-1 rounded p-2 ms-5"
+            @click="openConfirmationModal(user.id, false)"
+          >
+            <span class="pi pi-user-edit"></span>
+          </button>
+          <button
+            class="text-black hover:text-white hover:bg-red-700 font-bold md:px-1 rounded p-2 ms-5"
+            @click="openConfirmationModal(user.id, true)"
           >
             <span class="pi pi-trash"></span>
           </button>
@@ -33,12 +39,30 @@
     </ul>
     <ConfirmationModal
       :isVisible="isModalVisible"
-      :userId="userIdToDelete"
-      :onConfirm="confirmDelete"
+      :userId="userId"
+      :isDeleteAction="isDeleteAction"
+      :onConfirm="confirmAction"
       :onCancel="closeConfirmationModal"
+      :clearForm="clearForm"
+      :handleClickOutside="handleClickOutside"
     />
   </div>
-  <UserForm />
+  <div class="text-center">
+    <button
+      class="text-white bg-black font-bold md:px-1 rounded p-2 ms-5"
+      @click="openCreateModal()"
+    >
+      Create User
+    </button>
+  </div>
+  <div>
+    <CreateUserModal
+      :isVisible="isCreateModalVisible"
+      :closeCreateModal="closeCreateModal"
+      :clearForm="clearForm"
+      :handleClickOutside="handleClickOutside"
+    />
+  </div>
 </template>
 
 <script>
@@ -46,17 +70,23 @@ import { mapState } from 'vuex'
 import Loader from '../Loader/Loader.vue'
 import UserForm from './UserForm/UserForm.vue'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.vue'
+import CreateUserModal from '../CreateUserModal/CreateUserModal.vue'
 
 export default {
   components: {
     Loader,
     UserForm,
     ConfirmationModal,
+    CreateUserModal,
   },
   data() {
     return {
-      userIdToDelete: null,
+      fullName: '',
+      email: '',
+      userId: null,
       isModalVisible: false,
+      isCreateModalVisible: false,
+      isDeleteAction: false,
     }
   },
   computed: {
@@ -69,20 +99,44 @@ export default {
     },
   },
   created() {
-    // Dispatch the fetchUsers action when the component is created
     this.$store.dispatch('fetchUsers')
   },
   methods: {
-    openConfirmationModal(userId) {
-      this.userIdToDelete = userId
+    clearForm() {
+      this.fullName = ''
+      this.email = ''
+    },
+    openConfirmationModal(userId, isDeleteAction) {
+      this.userId = userId
+      this.isDeleteAction = isDeleteAction
       this.isModalVisible = true
     },
     closeConfirmationModal() {
-      this.isModalVisible = false // Hide the modal
+      this.isModalVisible = false
     },
-    confirmDelete(userId) {
-      this.$store.dispatch('deleteUser', userId) // Call deleteUser with the user ID
-      this.closeConfirmationModal() // Hide the modal after confirmation
+    openCreateModal() {
+      this.isCreateModalVisible = true
+    },
+    closeCreateModal() {
+      this.isCreateModalVisible = false
+    },
+    handleClickOutside(event) {
+      if (event.target.classList.contains('create-modal')) {
+        this.closeCreateModal()
+      }
+      if (event.target.classList.contains('modal')) {
+        this.closeConfirmationModal()
+      }
+    },
+    confirmAction(userId, updatedUser = null) {
+      if (this.isDeleteAction) {
+        this.$store.dispatch('deleteUser', userId)
+      } else {
+        this.$store.dispatch('editUser', { userId, updatedUser })
+        this.clearForm()
+        this.$store.dispatch('fetchUsers')
+      }
+      this.closeConfirmationModal()
     },
   },
 }
