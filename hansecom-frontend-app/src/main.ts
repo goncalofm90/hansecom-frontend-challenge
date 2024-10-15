@@ -91,7 +91,6 @@ const store = createStore<State>({
         const response = await axios.put(`http://localhost:3333/user/${userId}/edit`, updatedUser)
 
         commit('UPDATE_USER', response.data)
-        commit('SET_USERS', response.data)
       } catch (error) {
         const err = error as AxiosError
         console.error(err)
