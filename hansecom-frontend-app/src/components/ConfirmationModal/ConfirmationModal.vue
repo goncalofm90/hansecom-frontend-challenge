@@ -1,11 +1,27 @@
 <template>
-  <div class="modal" v-if="isVisible">
+  <div class="modal" v-if="isVisible" @click="handleClickOutside">
     <div class="modal-content">
-      <h2>Confirm Deletion</h2>
-      <p>Are you sure you want to delete this user?</p>
+      <h2>{{ isDeleteAction ? 'Confirm Deletion' : '' }}</h2>
+
+      <p v-if="isDeleteAction">Are you sure you want to delete this user?</p>
+      <div v-else>
+        <p class="mb-5 text-center">Edit User</p>
+
+        <div v-if="!isDeleteAction" class="flex flex-col">
+          <label class="py-5">
+            Full Name:
+            <input v-model="fullName" type="text" />
+          </label>
+          <label>
+            Email:
+            <input v-model="email" type="email" />
+          </label>
+        </div>
+      </div>
+
       <div class="modal-actions">
-        <button @click="confirmDelete">Yes</button>
-        <button @click="cancelDelete">No</button>
+        <button @click="confirmAction">{{ isDeleteAction ? 'Yes, Delete' : 'Edit' }}</button>
+        <button @click="cancelAction">Cancel</button>
       </div>
     </div>
   </div>
@@ -18,8 +34,21 @@ export default {
       type: Boolean,
       required: true,
     },
+    handleClickOutside: {
+      type: Function,
+      required: false,
+    },
+    clearForm: {
+      type: Function,
+      required: false,
+    },
     userId: {
-      type: Number,
+      type: [Number, null],
+      required: true,
+      default: 0,
+    },
+    isDeleteAction: {
+      type: Boolean,
       required: true,
     },
     onConfirm: {
@@ -31,12 +60,25 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      fullName: '',
+      email: '',
+      password: '',
+    }
+  },
   methods: {
-    confirmDelete() {
-      this.onConfirm(this.userId) // Call the confirm function with the user ID
+    confirmAction() {
+      if (this.isDeleteAction) {
+        this.onConfirm(this.userId)
+      } else {
+        const updatedUser = { fullName: this.fullName, email: this.email, date: Date.now() }
+        this.onConfirm(this.userId, updatedUser)
+        this.clearForm()
+      }
     },
-    cancelDelete() {
-      this.onCancel() // Call the cancel function
+    cancelAction() {
+      this.onCancel()
     },
   },
 }
