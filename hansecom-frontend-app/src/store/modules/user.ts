@@ -4,6 +4,7 @@ import { User, State } from '../../types/types'
 
 export interface UserState {
   users: User[]
+  user: User | null
   isLoading: boolean
   error: string | null
 }
@@ -12,12 +13,16 @@ const userModule: Module<UserState, State> = {
   namespaced: true,
   state: {
     users: [],
+    user: null,
     isLoading: false,
     error: null,
   },
   mutations: {
     SET_USERS(state: UserState, users: User[]) {
       state.users = users
+    },
+    SET_USER(state: UserState, user: User) {
+      state.user = user
     },
     ADD_USER(state: UserState, user: User) {
       state.users.push(user)
@@ -52,6 +57,20 @@ const userModule: Module<UserState, State> = {
         const err = error as AxiosError
         console.error(err)
         commit('SET_ERROR_USERS', 'We apologize. There was an error fetching the user list.')
+      } finally {
+        commit('SET_LOADING_USERS', false)
+      }
+    },
+    async fetchUserById({ commit }, userId: number) {
+      commit('SET_LOADING_USERS', true)
+      commit('CLEAR_ERROR_USERS')
+      try {
+        const response = await axios.get<User>(`http://localhost:3333/user/${userId}`)
+        commit('SET_USER', response.data)
+      } catch (error) {
+        const err = error as AxiosError
+        console.error(err)
+        commit('SET_ERROR_USERS', 'We apologize. There was an error fetching the user.')
       } finally {
         commit('SET_LOADING_USERS', false)
       }
