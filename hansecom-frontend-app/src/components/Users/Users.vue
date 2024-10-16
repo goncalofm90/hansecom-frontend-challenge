@@ -1,6 +1,6 @@
 <template>
   <div class="text-center text-2xl"><RouterLink to="/">Home</RouterLink></div>
-  <div className="p-10">
+  <div class="p-10">
     <div class="flex justify-between">
       <h1 class="font-bold text-2xl"><span class="pi pi-user"></span> User List</h1>
       <button
@@ -30,6 +30,14 @@
             Created
             <time datetime="2023-01-23T13:23Z">{{ new Date(user.createdAt).toDateString() }} </time>
           </p>
+          <RouterLink :to="`orders/${user.id}`">
+            <button
+              class="text-black outline outline-black text-xs hover:bg-orange-500 hover:text-white font-bold rounded p-1 ms-5"
+              @click="openConfirmationModal(user.id, user.fullName, user.email, false)"
+            >
+              orders
+            </button>
+          </RouterLink>
           <button
             class="text-black hover:bg-yellow-500 hover:text-white font-bold md:px-1 rounded p-2 ms-5"
             @click="openConfirmationModal(user.id, user.fullName, user.email, false)"
