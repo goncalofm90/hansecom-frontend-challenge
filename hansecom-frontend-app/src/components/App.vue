@@ -1,5 +1,5 @@
 <template>
-  <div className="flex justify-between p-5">
+  <div class="flex justify-between p-5">
     <RouterLink to="/orders">Orders</RouterLink>
     <RouterLink to="/users">Users</RouterLink>
   </div>

@@ -14,9 +14,7 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required />
       </div>
-      <button type="submit" className="btn bg-black text-white p-3 rounded mt-5">
-        Create User
-      </button>
+      <button type="submit" class="btn bg-black text-white p-3 rounded mt-5">Create User</button>
     </form>
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
   </div>

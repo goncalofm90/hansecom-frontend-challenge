@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div className="flex justify-center">
-    <h1 className="text-8xl text-center">Orders</h1>
+  <div class="flex justify-center">
+    <h1 class="text-8xl text-center">Orders for current user</h1>
   </div>
 </template>
