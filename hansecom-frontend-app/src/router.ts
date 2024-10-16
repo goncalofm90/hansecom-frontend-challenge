@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router'
-import store from './main'
+import store from './store/modules/user'
+import { UserState } from './store/modules/user'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,7 +22,9 @@ const routes: Array<RouteRecordRaw> = [
     beforeEnter: (to, from, next) => {
       const userId = to.params.id
       // In case we need to redirect to NotFound (manual id inputs that don't exist, etc)
-      const userExists = store.state.users.some((user) => user.id.toString() === userId)
+      const userExists = (store.state as UserState).users.some(
+        (user) => user.id.toString() === userId
+      )
       if (userExists) {
         next()
       } else {
