@@ -48,9 +48,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(['error']),
+    ...mapState('user', ['error']),
     errorMessage() {
-      return this.$store.getters.errorMessage
+      return this.$store.getters['user/errorMessage']
     },
   },
   data() {
@@ -73,7 +73,7 @@ export default {
         password: this.password,
       }
 
-      this.$store.dispatch('createUser', user).then(() => {
+      this.$store.dispatch('user/createUser', user).then(() => {
         this.resetForm()
         this.closeCreateModal()
       })
