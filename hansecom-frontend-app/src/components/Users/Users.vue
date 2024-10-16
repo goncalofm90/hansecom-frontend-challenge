@@ -3,7 +3,6 @@
   <div class="p-10">
     <div class="flex justify-between">
       <h1 class="font-bold text-2xl"><span class="pi pi-user"></span> User List</h1>
-      {{}}
       <button
         class="text-white bg-black font-bold md:px-1 rounded p-2 ms-5"
         @click="openCreateModal()"

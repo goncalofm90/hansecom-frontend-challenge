@@ -1,4 +1,3 @@
-// store/modules/user.ts
 import { Module } from 'vuex'
 import axios, { AxiosError } from 'axios'
 import { User, State } from '../../types/types'
