@@ -33,7 +33,6 @@
           <RouterLink :to="`orders/${user.id}`">
             <button
               class="text-black outline outline-black text-xs hover:bg-orange-500 hover:text-white font-bold rounded p-1 ms-5"
-              @click="openConfirmationModal(user.id, user.fullName, user.email, false)"
             >
               orders
             </button>
@@ -98,16 +97,16 @@ export default {
     }
   },
   computed: {
-    ...mapState(['users', 'error']), // Map users and errors from Vuex state to the component
+    ...mapState('user', ['users', 'error']), // Map users and errors from Vuex state to the component
     isLoading() {
-      return this.$store.state.isLoading // Get loading state from Vuex
+      return this.$store.state.user.isLoading // Get loading state from Vuex
     },
     errorMessage() {
-      return this.$store.getters.errorMessage // Get error message from Vuex getters
+      return this.$store.getters['user/errorMessage'] // Get error message from Vuex getters
     },
   },
   created() {
-    this.$store.dispatch('fetchUsers')
+    this.$store.dispatch('user/fetchUsers')
   },
   methods: {
     openConfirmationModal(userId, fullName, email, isDeleteAction) {
@@ -136,10 +135,10 @@ export default {
     },
     confirmAction(userId, updatedUser = null) {
       if (this.isDeleteAction) {
-        this.$store.dispatch('deleteUser', userId)
+        this.$store.dispatch('user/deleteUser', userId)
       } else {
-        this.$store.dispatch('editUser', { userId, updatedUser })
-        this.$store.dispatch('fetchUsers')
+        this.$store.dispatch('user/editUser', { userId, updatedUser })
+        this.$store.dispatch('user/fetchUsers')
       }
       this.closeConfirmationModal()
     },
