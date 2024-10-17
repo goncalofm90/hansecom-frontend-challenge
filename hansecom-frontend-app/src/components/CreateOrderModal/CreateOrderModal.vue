@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      orderDate: new Date(Date.now()).toDateString(),
+      orderDate: new Date(Date.now()),
       product: '',
     }
   },
