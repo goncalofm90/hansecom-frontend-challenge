@@ -21,9 +21,10 @@
     <!-- Show loader if loading -->
     <Loader v-if="isLoading" />
     <!-- Show error message -->
+    <OrderFilter :orders="orders" :onFilteredOrders="updateFilteredOrders" />
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     <ul role="list" class="divide-y divide-gray-100" v-else>
-      <li v-for="order in orders" :key="order.id" class="flex justify-between gap-x-6 py-5">
+      <li v-for="order in filteredOrders" :key="order.id" class="flex justify-between gap-x-6 py-5">
         <div class="flex min-w-0 gap-x-4">
           <span class="pi pi-cart-arrow-down content-center text-4xl"></span>
           <div class="min-w-0 flex-auto">
@@ -71,6 +72,7 @@
   </div>
   <div>
     <CreateOrderModal
+      :updateFilteredOrders="updateFilteredOrders"
       :isVisible="isCreateModalVisible"
       :closeCreateModal="closeCreateModal"
       :handleClickOutside="handleClickOutside"
@@ -83,12 +85,14 @@ import { mapState } from 'vuex'
 import Loader from '../Loader/Loader.vue'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.vue'
 import CreateOrderModal from '../CreateOrderModal/CreateOrderModal.vue'
+import OrderFilter from './Orderfilter/Orderfilter.vue'
 
 export default {
   components: {
     Loader,
     ConfirmationModal,
     CreateOrderModal,
+    OrderFilter,
   },
   data() {
     return {
@@ -98,6 +102,7 @@ export default {
       isModalVisible: false,
       isCreateModalVisible: false,
       isDeleteAction: false,
+      filteredOrders: [],
     }
   },
   computed: {
@@ -113,6 +118,14 @@ export default {
   created() {
     this.$store.dispatch('order/fetchOrders', this.$route.params.id)
     this.$store.dispatch('user/fetchUserById', this.$route.params.id)
+  },
+  watch: {
+    orders: {
+      immediate: true,
+      handler(newOrders) {
+        this.filteredOrders = [...newOrders]
+      },
+    },
   },
   methods: {
     openConfirmationModal(orderId, orderDate, product, isDeleteAction) {
@@ -134,9 +147,10 @@ export default {
     confirmAction(orderId, updatedOrder = null) {
       if (this.isDeleteAction) {
         this.$store.dispatch('order/deleteOrder', orderId)
+        this.updateFilteredOrders(this.orders)
       } else {
         this.$store.dispatch('order/editOrder', { orderId, updatedOrder })
-        this.$store.dispatch('order/fetchOrders', this.$route.params.id)
+        this.updateFilteredOrders(this.orders)
       }
       this.closeConfirmationModal()
     },
@@ -147,6 +161,9 @@ export default {
       if (event.target.classList.contains('modal')) {
         this.closeConfirmationModal()
       }
+    },
+    updateFilteredOrders(orders) {
+      this.filteredOrders = orders
     },
   },
 }
