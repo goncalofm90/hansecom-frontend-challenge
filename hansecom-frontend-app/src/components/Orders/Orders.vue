@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <RouterLink :to="`/users`" class="px-5">
     <button
@@ -11,7 +9,7 @@
   <div class="p-10">
     <div class="flex justify-between">
       <h1 class="font-bold text-2xl">
-        <span class="pi pi-user"></span> {{ user.full_name }}'s Orders
+        <span class="pi pi-user"></span> {{ !error ? `${user?.full_name}'s orders` : null }}
       </h1>
       <button
         class="text-white bg-black font-bold md:px-1 rounded p-2 ms-5 hover:bg-blue-500"
@@ -29,9 +27,11 @@
         <div class="flex min-w-0 gap-x-4">
           <span class="pi pi-cart-arrow-down content-center text-4xl"></span>
           <div class="min-w-0 flex-auto">
-            <p class="font-semibold leading-6 text-gray-900">{{ order.product }}</p>
+            <p class="font-semibold leading-6 text-gray-900">
+              {{ order.product }}
+            </p>
             <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-              Ordered by {{ user.full_name }} - {{ user.email }}
+              Ordered by {{ user?.full_name }} - {{ user?.email }}
             </p>
           </div>
         </div>
@@ -44,13 +44,13 @@
           </p>
           <button
             class="text-black hover:bg-yellow-500 hover:text-white font-bold md:px-1 rounded p-2 ms-5"
-            @click="openConfirmationModal(user.id, user.fullName, user.email, false)"
+            @click="openConfirmationModal(order.id, order.order_date, order.product, false)"
           >
             <span class="pi pi-box"></span>
           </button>
           <button
             class="text-black hover:text-white hover:bg-red-700 font-bold md:px-1 rounded p-2 ms-5"
-            @click="openConfirmationModal(user.id, user.fullName, user.email, true)"
+            @click="openConfirmationModal(order.id, order.order_date, order.product, true)"
           >
             <span class="pi pi-trash"></span>
           </button>
@@ -59,17 +59,18 @@
     </ul>
     <ConfirmationModal
       :isVisible="isModalVisible"
-      :userId="userId"
-      :fullName="fullName"
-      :email="email"
+      :orderId="orderId"
+      :orderDate="orderDate"
+      :product="product"
       :isDeleteAction="isDeleteAction"
+      :isUser="false"
       :onConfirm="confirmAction"
       :onCancel="closeConfirmationModal"
       :handleClickOutside="handleClickOutside"
     />
   </div>
   <div>
-    <CreateUserModal
+    <CreateOrderModal
       :isVisible="isCreateModalVisible"
       :closeCreateModal="closeCreateModal"
       :handleClickOutside="handleClickOutside"
@@ -80,42 +81,44 @@
 <script>
 import { mapState } from 'vuex'
 import Loader from '../Loader/Loader.vue'
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.vue'
+import CreateOrderModal from '../CreateOrderModal/CreateOrderModal.vue'
 
 export default {
   components: {
     Loader,
+    ConfirmationModal,
+    CreateOrderModal,
   },
   data() {
     return {
+      orderDate: '',
+      product: '',
       orderId: null,
-      userId: null,
       isModalVisible: false,
       isCreateModalVisible: false,
       isDeleteAction: false,
     }
   },
   computed: {
-    ...mapState('order', ['orders', 'error']), // Map orders and errors from Vuex state to the component
+    ...mapState('order', ['orders', 'error']),
     ...mapState('user', ['user', 'error']),
     isLoading() {
-      return this.$store.state.order.isLoading // Get loading state from Vuex
+      return this.$store.state.order.isLoading
     },
     errorMessage() {
-      return this.$store.getters['order/errorMessage'] // Get error message from Vuex getters
+      return this.$store.getters['order/errorMessage']
     },
   },
   created() {
-    this.userId = this.$route.params.id
-    if (this.userId) {
-      this.$store.dispatch('order/fetchOrders', this.userId)
-      this.$store.dispatch('user/fetchUserById', this.userId)
-    }
+    this.$store.dispatch('order/fetchOrders', this.$route.params.id)
+    this.$store.dispatch('user/fetchUserById', this.$route.params.id)
   },
   methods: {
-    openConfirmationModal(userId, fullName, email, isDeleteAction) {
-      this.orderId = userId
-      this.fullName = fullName
-      this.email = email
+    openConfirmationModal(orderId, orderDate, product, isDeleteAction) {
+      this.orderDate = orderDate
+      this.product = product
+      this.orderId = orderId
       this.isDeleteAction = isDeleteAction
       this.isModalVisible = true
     },
@@ -128,6 +131,15 @@ export default {
     closeCreateModal() {
       this.isCreateModalVisible = false
     },
+    confirmAction(orderId, updatedOrder = null) {
+      if (this.isDeleteAction) {
+        this.$store.dispatch('order/deleteOrder', orderId)
+      } else {
+        this.$store.dispatch('order/editOrder', { orderId, updatedOrder })
+        this.$store.dispatch('order/fetchOrders', this.$route.params.id)
+      }
+      this.closeConfirmationModal()
+    },
     handleClickOutside(event) {
       if (event.target.classList.contains('create-modal')) {
         this.closeCreateModal()
@@ -135,15 +147,6 @@ export default {
       if (event.target.classList.contains('modal')) {
         this.closeConfirmationModal()
       }
-    },
-    confirmAction(userId, updatedUser = null) {
-      if (this.isDeleteAction) {
-        this.$store.dispatch('order/deleteOrder', userId)
-      } else {
-        this.$store.dispatch('order/editOrder', { userId, updatedOrder })
-        this.$store.dispatch('user/fetchOrders')
-      }
-      this.closeConfirmationModal()
     },
   },
 }
