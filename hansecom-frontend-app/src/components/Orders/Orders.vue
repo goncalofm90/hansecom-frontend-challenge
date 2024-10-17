@@ -43,8 +43,12 @@
         <div class="md:flex md:items-center flex">
           <p class="hidden md:block mt-1 text-xs leading-5 text-gray-500">
             Ordered on
-            <time datetime="2023-01-23T13:23Z"
-              >{{ new Date(order.order_date).toDateString() }}
+            <time
+              >{{
+                order.orderDate
+                  ? new Date(order.orderDate).toDateString()
+                  : new Date(order.order_date).toDateString()
+              }}
             </time>
           </p>
           <button
