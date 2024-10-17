@@ -22,7 +22,7 @@ export default class OrdersController {
     const formData = request.body()
 
     const order = await Order.create({
-      userId: formData.user,
+      userId: formData.userId,
       orderDate: formData.orderDate,
       product: formData.product,
     })
