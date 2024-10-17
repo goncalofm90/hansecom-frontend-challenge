@@ -16,9 +16,10 @@
     <!-- Show loader if loading -->
     <Loader v-if="isLoading" />
     <!-- Show error message -->
+    <UserFilter :users="users" :onFilteredUsers="updateFilteredUsers" />
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     <ul role="list" class="divide-y divide-gray-100" v-else>
-      <li v-for="user in users" :key="user.id" class="flex justify-between gap-x-6 py-5">
+      <li v-for="user in filteredUsers" :key="user.id" class="flex justify-between gap-x-6 py-5">
         <div class="flex min-w-0 gap-x-4">
           <span class="pi pi-user"></span>
           <div class="min-w-0 flex-auto">
@@ -82,6 +83,7 @@ import Loader from '../Loader/Loader.vue'
 import CreateUserForm from './CreateUserForm/CreateUserForm.vue'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.vue'
 import CreateUserModal from '../CreateUserModal/CreateUserModal.vue'
+import UserFilter from '../UserFilter/UserFilter.vue'
 
 export default {
   components: {
@@ -89,6 +91,7 @@ export default {
     CreateUserForm,
     ConfirmationModal,
     CreateUserModal,
+    UserFilter,
   },
   data() {
     return {
@@ -98,6 +101,7 @@ export default {
       isModalVisible: false,
       isCreateModalVisible: false,
       isDeleteAction: false,
+      filteredUsers: [],
     }
   },
   computed: {
@@ -111,6 +115,14 @@ export default {
   },
   created() {
     this.$store.dispatch('user/fetchUsers')
+  },
+  watch: {
+    users: {
+      immediate: true,
+      handler(newUsers) {
+        this.filteredUsers = [...newUsers]
+      },
+    },
   },
   methods: {
     openConfirmationModal(userId, fullName, email, isDeleteAction) {
@@ -145,6 +157,9 @@ export default {
         this.$store.dispatch('user/fetchUsers')
       }
       this.closeConfirmationModal()
+    },
+    updateFilteredUsers(users) {
+      this.filteredUsers = users
     },
   },
 }
