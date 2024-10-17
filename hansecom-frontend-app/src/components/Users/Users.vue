@@ -58,6 +58,7 @@
       :fullName="fullName"
       :email="email"
       :isDeleteAction="isDeleteAction"
+      :isUser="true"
       :onConfirm="confirmAction"
       :onCancel="closeConfirmationModal"
       :handleClickOutside="handleClickOutside"
@@ -75,14 +76,14 @@
 <script>
 import { mapState } from 'vuex'
 import Loader from '../Loader/Loader.vue'
-import UserForm from './UserForm/UserForm.vue'
+import CreateUserForm from './CreateUserForm/CreateUserForm.vue'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.vue'
 import CreateUserModal from '../CreateUserModal/CreateUserModal.vue'
 
 export default {
   components: {
     Loader,
-    UserForm,
+    CreateUserForm,
     ConfirmationModal,
     CreateUserModal,
   },
