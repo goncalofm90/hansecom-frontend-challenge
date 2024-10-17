@@ -2,15 +2,7 @@
   <div class="modal" v-if="isVisible" @click="handleClickOutside">
     <div class="modal-content">
       <h2>
-        {{
-          isDeleteAction
-            ? isUser
-              ? 'Confirm Deletion'
-              : 'Delete Order'
-            : isUser
-              ? ''
-              : 'Edit Order'
-        }}
+        {{ isDeleteAction ? (isUser ? 'Confirm Deletion' : 'Delete Order') : '' }}
       </h2>
 
       <p v-if="isDeleteAction">
