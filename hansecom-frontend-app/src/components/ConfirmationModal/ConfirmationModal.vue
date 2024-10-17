@@ -40,15 +40,7 @@
 
       <div class="modal-actions">
         <button @click="confirmAction">
-          {{
-            isDeleteAction
-              ? isUser
-                ? 'Yes, Delete'
-                : 'Yes, Delete Order'
-              : isUser
-                ? 'Edit'
-                : 'Edit Order'
-          }}
+          {{ isDeleteAction ? 'Delete' : 'Edit' }}
         </button>
         <button @click="cancelAction">Cancel</button>
       </div>
