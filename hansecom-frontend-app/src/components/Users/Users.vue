@@ -1,3 +1,6 @@
+<!-- TODO: DO NOT FORGET TO TYPE EVERYTHING -->
+<!-- <script setup lang="ts"></script> -->
+
 <template>
   <div class="text-center text-2xl"><RouterLink to="/">Home</RouterLink></div>
   <div class="p-10">
