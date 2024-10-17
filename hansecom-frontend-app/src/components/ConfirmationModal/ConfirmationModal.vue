@@ -1,13 +1,21 @@
 <template>
   <div class="modal" v-if="isVisible" @click="handleClickOutside">
     <div class="modal-content">
-      <h2>{{ isDeleteAction ? 'Confirm Deletion' : '' }}</h2>
+      <h2>
+        {{ isDeleteAction ? (isUser ? 'Confirm Deletion' : 'Delete Order') : '' }}
+      </h2>
 
-      <p v-if="isDeleteAction">Are you sure you want to delete this user?</p>
+      <p v-if="isDeleteAction">
+        {{
+          isUser
+            ? 'Are you sure you want to delete this user?'
+            : 'Are you sure you want to delete this order?'
+        }}
+      </p>
       <div v-else>
-        <p class="mb-5 text-center">Edit User</p>
+        <p class="mb-5 text-center">{{ isUser ? 'Edit User' : 'Edit Order' }}</p>
 
-        <div v-if="!isDeleteAction" class="flex flex-col">
+        <div v-if="!isDeleteAction && isUser" class="flex flex-col">
           <label class="py-5">
             Full Name:
             <input v-model="localFullName" type="text" />
@@ -17,10 +25,23 @@
             <input v-model="localEmail" type="email" />
           </label>
         </div>
+
+        <div v-if="!isDeleteAction && !isUser" class="flex flex-col">
+          <label class="py-5">
+            Order Date:
+            <input v-model="localOrderDate" type="date" />
+          </label>
+          <label>
+            Product:
+            <input v-model="localProduct" type="text" />
+          </label>
+        </div>
       </div>
 
       <div class="modal-actions">
-        <button @click="confirmAction">{{ isDeleteAction ? 'Yes, Delete' : 'Edit' }}</button>
+        <button @click="confirmAction">
+          {{ isDeleteAction ? 'Delete' : 'Edit' }}
+        </button>
         <button @click="cancelAction">Cancel</button>
       </div>
     </div>
@@ -40,18 +61,35 @@ export default {
     },
     userId: {
       type: [Number, null],
-      required: true,
-      default: 0,
+      required: false,
+      default: null,
+    },
+    orderId: {
+      type: [Number, null],
+      required: false,
+      default: null,
     },
     fullName: {
       type: String,
-      required: true,
+      required: false,
     },
     email: {
       type: String,
-      required: true,
+      required: false,
+    },
+    orderDate: {
+      type: String,
+      required: false,
+    },
+    product: {
+      type: String,
+      required: false,
     },
     isDeleteAction: {
+      type: Boolean,
+      required: true,
+    },
+    isUser: {
       type: Boolean,
       required: true,
     },
@@ -68,6 +106,8 @@ export default {
     return {
       localFullName: this.fullName,
       localEmail: this.email,
+      localOrderDate: this.orderDate,
+      localProduct: this.product,
     }
   },
   watch: {
@@ -77,18 +117,31 @@ export default {
     email(newVal) {
       this.localEmail = newVal
     },
+    orderDate(newVal) {
+      this.localOrderDate = newVal
+    },
+    product(newVal) {
+      this.localProduct = newVal
+    },
   },
   methods: {
     confirmAction() {
       if (this.isDeleteAction) {
-        this.onConfirm(this.userId)
+        this.isUser ? this.onConfirm(this.userId) : this.onConfirm(this.orderId)
       } else {
-        const updatedUser = {
-          fullName: this.localFullName,
-          email: this.localEmail,
-          date: Date.now(),
+        if (this.isUser) {
+          const updatedUser = {
+            fullName: this.localFullName,
+            email: this.localEmail,
+          }
+          this.onConfirm(this.userId, updatedUser)
+        } else {
+          const updatedOrder = {
+            orderDate: this.localOrderDate,
+            product: this.localProduct,
+          }
+          this.onConfirm(this.orderId, updatedOrder)
         }
-        this.onConfirm(this.userId, updatedUser)
       }
     },
     cancelAction() {
