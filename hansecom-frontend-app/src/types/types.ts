@@ -9,6 +9,7 @@ export interface User {
 export interface Order {
   id: number
   userId: number
+  orderId: number
   orderDate: string
   product: string
   createdAt: string
@@ -18,6 +19,7 @@ export interface Order {
 export interface State {
   users: User[]
   user: User | null
+  orders: Order[]
   isLoading: boolean
   error: string | null
 }
