@@ -83,7 +83,7 @@ import Loader from '../Loader/Loader.vue'
 import CreateUserForm from './CreateUserForm/CreateUserForm.vue'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.vue'
 import CreateUserModal from '../CreateUserModal/CreateUserModal.vue'
-import UserFilter from '../UserFilter/UserFilter.vue'
+import UserFilter from './UserFilter/UserFilter.vue'
 
 export default {
   components: {
@@ -152,9 +152,10 @@ export default {
     confirmAction(userId, updatedUser = null) {
       if (this.isDeleteAction) {
         this.$store.dispatch('user/deleteUser', userId)
+        this.updateFilteredUsers(this.users)
       } else {
         this.$store.dispatch('user/editUser', { userId, updatedUser })
-        this.$store.dispatch('user/fetchUsers')
+        this.updateFilteredUsers(this.users)
       }
       this.closeConfirmationModal()
     },
