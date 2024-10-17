@@ -66,10 +66,18 @@ export default {
         password: this.password,
       }
 
-      this.$store.dispatch('user/createUser', user).then(() => {
-        this.resetForm()
-        this.closeCreateModal()
-      })
+      this.$store
+        .dispatch('user/createUser', user)
+        .then(() => {
+          this.resetForm()
+          this.closeCreateModal()
+          this.$store.dispatch('user/fetchUsers', this.userId).then(() => {
+            this.updateFilteredUsers(this.$store.state.user.users)
+          })
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
   },
 }

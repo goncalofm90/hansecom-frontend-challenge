@@ -23,6 +23,10 @@ export default {
       type: Function,
       required: false,
     },
+    updateFilteredOrders: {
+      type: Function,
+      required: false,
+    },
     handleClickOutside: {
       type: Function,
       required: false,
@@ -52,16 +56,24 @@ export default {
       this.product = ''
     },
     submitForm() {
-      const user = {
+      const order = {
         userId: this.userId,
         orderDate: this.orderDate,
         product: this.product,
       }
 
-      this.$store.dispatch('order/createOrder', user).then(() => {
-        this.resetForm()
-        this.closeCreateModal()
-      })
+      this.$store
+        .dispatch('order/createOrder', order)
+        .then(() => {
+          this.resetForm()
+          this.closeCreateModal()
+          this.$store.dispatch('order/fetchOrders', this.userId).then(() => {
+            this.updateFilteredOrders(this.$store.state.order.orders)
+          })
+        })
+        .catch((err) => {
+          console.error(err)
+        })
     },
   },
 }
