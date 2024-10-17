@@ -53,13 +53,6 @@ export default {
       return this.$store.getters['user/errorMessage']
     },
   },
-  data() {
-    return {
-      fullName: '',
-      email: '',
-      password: '',
-    }
-  },
   methods: {
     resetForm() {
       this.fullName = ''
