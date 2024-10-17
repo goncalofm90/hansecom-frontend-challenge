@@ -14,12 +14,12 @@
       </button>
     </div>
     <!-- Show loader if loading -->
-    <Loader v-if="isLoading" />
+    <Loader v-if="isLoading && paginatedUsers.length" />
     <!-- Show error message -->
     <UserFilter :users="users" :onFilteredUsers="updateFilteredUsers" />
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     <ul role="list" class="divide-y divide-gray-100" v-else>
-      <li v-for="user in filteredUsers" :key="user.id" class="flex justify-between gap-x-6 py-5">
+      <li v-for="user in paginatedUsers" :key="user.id" class="flex justify-between gap-x-6 py-5">
         <div class="flex min-w-0 gap-x-4">
           <span class="pi pi-user"></span>
           <div class="min-w-0 flex-auto">
@@ -56,6 +56,35 @@
         </div>
       </li>
     </ul>
+    <div class="flex justify-center mt-4" v-if="filteredUsers.length > itemsPerPage">
+      <button
+        :disabled="currentPage === 1"
+        @click="goToPage(currentPage - 1)"
+        class="px-4 py-2 mx-1 bg-gray-200 hover:bg-gray-300 rounded"
+      >
+        Previous
+      </button>
+
+      <button
+        v-for="page in totalPages"
+        :key="page"
+        @click="goToPage(page)"
+        :class="[
+          'px-4 py-2 mx-1 rounded',
+          { 'bg-blue-500 text-white': currentPage === page, 'bg-gray-200': currentPage !== page },
+        ]"
+      >
+        {{ page }}
+      </button>
+
+      <button
+        :disabled="currentPage === totalPages"
+        @click="goToPage(currentPage + 1)"
+        class="px-4 py-2 mx-1 bg-gray-200 hover:bg-gray-300 rounded"
+      >
+        Next
+      </button>
+    </div>
     <ConfirmationModal
       :isVisible="isModalVisible"
       :userId="userId"
@@ -102,6 +131,8 @@ export default {
       isCreateModalVisible: false,
       isDeleteAction: false,
       filteredUsers: [],
+      currentPage: 1,
+      itemsPerPage: 5,
     }
   },
   computed: {
@@ -111,6 +142,14 @@ export default {
     },
     errorMessage() {
       return this.$store.getters['user/errorMessage'] // Get error message from Vuex getters
+    },
+    paginatedUsers() {
+      const start = (this.currentPage - 1) * this.itemsPerPage
+      const end = start + this.itemsPerPage
+      return this.filteredUsers.slice(start, end)
+    },
+    totalPages() {
+      return Math.ceil(this.filteredUsers.length / this.itemsPerPage)
     },
   },
   created() {
@@ -161,6 +200,11 @@ export default {
     },
     updateFilteredUsers(users) {
       this.filteredUsers = users
+    },
+    goToPage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page
+      }
     },
   },
 }
