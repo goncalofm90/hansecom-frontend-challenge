@@ -59,8 +59,7 @@ Now we Cd back into hansecom-frontend-challenge to run the backend.
    ```bash
    npm run dev
    ```
-   Once running, we cd again into hansecom-frontend-app.
-2. Open a new terminal tab and start the frontend development server:
+2. Once running, we open a new terminal tab cd into hansecom-frontend-app and start the frontend development server:
    ```bash
    npm run dev
    ```
