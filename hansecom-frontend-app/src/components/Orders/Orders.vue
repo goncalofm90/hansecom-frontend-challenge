@@ -9,7 +9,7 @@
   <div class="p-10">
     <div class="flex justify-between">
       <h1 class="font-bold text-2xl">
-        <span class="pi pi-user"></span> {{ !error ? `${user?.full_name}'s orders` : null }}
+        <span class="pi pi-user"></span> {{ !error ? 'Order list' : '' }}
       </h1>
       <button
         class="text-white bg-hansecom-blue hover:bg-hansecom-cyan hover:text-white font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
@@ -18,13 +18,14 @@
         Order Item
       </button>
     </div>
-    <!-- Show loader if loading -->
-    <Loader v-if="isLoading && paginatedOrders.length" />
-    <!-- Show error message -->
     <OrderFilter :orders="orders" :onFilteredOrders="updateFilteredOrders" />
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <!-- Show loader if loading -->
+    <Loader v-if="isLoading" />
     <ul role="list" class="divide-y divide-gray-100" v-else>
+      <!-- Show error message -->
+      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
       <li
+        v-if="paginatedOrders.length"
         v-for="order in paginatedOrders"
         :key="order.id"
         class="flex justify-between gap-x-6 py-5 hover:bg-hansecom-cyan transition duration-200 ease-linear hover:text-white p-5 rounded"
@@ -52,18 +53,21 @@
             </time>
           </p>
           <button
-            class="text-black hover:bg-hansecom-orange hover:text-white font-bold md:px-1 rounded p-2 ms-5"
+            class="text-black hover:bg-hansecom-orange hover:text-white font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
             @click="openConfirmationModal(order.id, order.order_date, order.product, false)"
           >
             <span class="pi pi-box"></span>
           </button>
           <button
-            class="text-black hover:text-white hover:bg-hansecom-red font-bold md:px-1 rounded p-2 ms-5"
+            class="text-black hover:text-white hover:bg-hansecom-red font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
             @click="openConfirmationModal(order.id, order.order_date, order.product, true)"
           >
             <span class="pi pi-trash"></span>
           </button>
         </div>
+      </li>
+      <li v-else class="text-center text-2xl text-hansecom-blue">
+        This user has no scheduled orders at the moment.
       </li>
     </ul>
 

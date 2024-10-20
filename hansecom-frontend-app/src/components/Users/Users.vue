@@ -19,13 +19,14 @@
         Create User
       </button>
     </div>
-    <!-- Show loader if loading -->
-    <!-- Show error message -->
     <UserFilter :users="users" :onFilteredUsers="updateFilteredUsers" />
-    <Loader v-if="isLoading && paginatedUsers.length" />
+    <!-- Show loader if loading -->
+    <Loader v-if="isLoading" />
     <ul role="list" class="divide-y divide-gray-100" v-else>
+      <!-- Show error message -->
       <p v-if="errorMessage" class="error text-hansecom-red">{{ errorMessage }}</p>
       <li
+        v-if="paginatedUsers.length"
         v-for="user in paginatedUsers"
         :key="user.id"
         class="flex justify-between gap-x-6 py-5 hover:bg-hansecom-cyan transition duration-200 ease-linear hover:text-white p-5 rounded"
@@ -67,6 +68,7 @@
           </button>
         </div>
       </li>
+      <li v-else class="text-center text-2xl text-hansecom-blue">There are no created users.</li>
     </ul>
     <div class="flex justify-center mt-4" v-if="filteredUsers.length > itemsPerPage">
       <button
