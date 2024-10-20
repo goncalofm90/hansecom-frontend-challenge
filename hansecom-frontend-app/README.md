@@ -155,6 +155,6 @@ Now we Cd back into hansecom-frontend-challenge to run the backend.
 
 ## Notes while doing the challenge
 
-- The endpoint for getting a user by ID had a typo; it should be `/user/:id`.
+- The endpoint for getting a user by ID had a typo in the readme; I was able to acess it by using `/user/:id`.
 - The "create order" API expects the key `user` instead of `userId`.
 - The `env.example` file has been removed. Please follow the README instructions.
