@@ -1,6 +1,3 @@
-<!-- TODO: DO NOT FORGET TO TYPE EVERYTHING -->
-<!-- <script setup lang="ts"></script> -->
-
 <template>
   <RouterLink :to="`/`">
     <button
