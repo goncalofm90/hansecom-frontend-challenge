@@ -36,6 +36,8 @@ NODE_ENV=development
 6. Run: node ace db:seed
 7. Run: npm run dev
 
+The development server for the back end should be up and running.
+
 ### FRONTEND SETUP
 
 1. Setup the backend as instructed above.
