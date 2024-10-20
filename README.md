@@ -1,6 +1,26 @@
-Steps to set up backend:
+# Hansecom Frontend Challenge
 
-1. Clone to repo
+## Project Overview
+
+This project is designed to demonstrate the capabilities of a full-stack application using Vue.js for the frontend and a Node.js backend. The frontend leverages Tailwind CSS for styling, Axios for API requests, VueX for state management, and Vue Router for routing.
+
+## Technology Stack
+
+- **Styling**: Tailwind CSS & Prime Icons
+- **API Requests**: Axios
+- **State Management**: VueX
+- **Routing**: Vue Router
+- **Node Version**: 21.7.3
+
+## Getting Started
+
+### Prerequisites
+
+- Ensure that you have Node.js version **20.2 or above** installed to avoid any errors and please do not forget to setup the database, frontend and create the env file.
+
+### BACKEND SETUP
+
+1. Clone the repository.
 2. Run: npm install
 3. Create a .env file and populate with the following:
 
@@ -18,38 +38,121 @@ NODE_ENV=development
 
 The development server for the back end should be up and running. Do not make any changes here. Create a separate directory for the front end. If you try to access thes '/users' endpoint, you should see the seeded user provided.
 
-**Endpoints**<br/>
+### FRONTEND SETUP
 
-Fetch all users</br>
-GET /users
+1. Setup the backend as instructed above.
 
-Create new user</br>
-POST /users</br>
-Expected body: { fullName: string, email: string, password: string }
+2. Once inside the hansecom-frontend-challenge directory, navigate to the frontend project directory:
+   ```bash
+   cd hansecom-frontend-app
+   ```
+3. Install the necessary dependencies:
+   ```bash
+   npm install
+   ```
 
-Get user by id</br>
-GET /users/:id
+### Running the Application
 
-Delete user</br>
-DELETE /users/:id
+1. Start the backend server:
+   ```bash
+   npm run dev
+   ```
+2. Open a new terminal tab and start the frontend development server:
+   ```bash
+   npm run dev
+   ```
 
-Update user</br>
-PUT /user/:id/edit</br>
-Expected body: { fullName: string, email: string }
+### Access the Application
 
-Get orders by user id</br>
-GET /orders/:id
+- **Frontend Host**: [http://localhost:5173/](http://localhost:5173/)
+- **Backend Host**: [http://localhost:3333/](http://localhost:3333/)
 
-Create order</br>
-POST /orders</br>
-Expected body: { userId: string, orderDate: date, product: string }
+## API Endpoints
 
-Delete order</br>
-DELETE /orders/:id
+### Users
 
-Get order by id</br>
-GET /order/:id
+- **Get all users**
 
-Update order</br>
-PUT /order/:id/edit</br>
-Expected body: { orderDate: date, product: string }
+  - **Method**: GET
+  - **Endpoint**: `http://localhost:3333/users`
+
+- **Create a new user**
+
+  - **Method**: POST
+  - **Endpoint**: `http://localhost:3333/users`
+  - **Expected body**:
+    ```json
+    {
+      "fullName": "string",
+      "email": "string",
+      "password": "string"
+    }
+    ```
+
+- **Get user by ID**
+
+  - **Method**: GET
+  - **Endpoint**: `http://localhost:3333/user/:id`
+
+- **Update user**
+
+  - **Method**: PUT
+  - **Endpoint**: `http://localhost:3333/user/:id/edit`
+  - **Expected body**:
+    ```json
+    {
+      "fullName": "string",
+      "email": "string"
+    }
+    ```
+
+- **Delete user**
+  - **Method**: DELETE
+  - **Endpoint**: `http://localhost:3333/users/:id`
+
+### Orders
+
+- **Get orders by user ID**
+
+  - **Method**: GET
+  - **Endpoint**: `http://localhost:3333/orders/:id`
+
+- **Create order**
+
+  - **Method**: POST
+  - **Endpoint**: `http://localhost:3333/orders`
+  - **Expected body**:
+    ```json
+    {
+      "user": "string",
+      "orderDate": "date",
+      "product": "string"
+    }
+    ```
+
+- **Get order by ID**
+
+  - **Method**: GET
+  - **Endpoint**: `http://localhost:3333/order/:id`
+
+- **Update order**
+
+  - **Method**: PUT
+  - **Endpoint**: `http://localhost:3333/order/:id/edit`
+  - **Expected body**:
+    ```json
+    {
+      "orderDate": "date",
+      "product": "string"
+    }
+    ```
+
+- **Delete order**
+  - **Method**: DELETE
+  - **Endpoint**: `http://localhost:3333/orders/:id`
+
+## Notes while doing the challenge
+
+- The endpoint for getting a user by ID had a typo; it should be `/user/:id`.
+- The "create order" API expects the key `user` instead of `userId`.
+- The `env.example` file has been removed. Please follow the README instructions.

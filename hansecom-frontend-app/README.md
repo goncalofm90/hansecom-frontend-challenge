@@ -1,19 +1,5 @@
 # Hansecom Frontend Challenge
 
-# ENV
-
-TZ=UTC<br/>
-PORT=3333<br/>
-HOST=localhost<br/>
-LOG_LEVEL=info<br/>
-APP_KEY=qFlFnOw4MsxVSTajLUuothM9m_oPu7jp<br/>
-NODE_ENV=development
-
-4. Create a tmp folder in the root directory
-5. Run: node ace migration:run
-6. Run: node ace db:seed
-7. Run: npm run dev
-
 ## Project Overview
 
 This project is designed to demonstrate the capabilities of a full-stack application using Vue.js for the frontend and a Node.js backend. The frontend leverages Tailwind CSS for styling, Axios for API requests, VueX for state management, and Vue Router for routing.
@@ -30,27 +16,37 @@ This project is designed to demonstrate the capabilities of a full-stack applica
 
 ### Prerequisites
 
-- Ensure that you have Node.js version **20.2 or above** installed to avoid any "badengine" errors.
+- Ensure that you have Node.js version **20.2 or above** installed to avoid any errors and please do not forget to setup the database, frontend and create the env file.
 
-### Installation
+### BACKEND SETUP
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/hansecom-frontend-challenge.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd hansecom-frontend-challenge
-   ```
-3. Install the backend dependencies:
-   ```bash
-   npm install
-   ```
-4. Move into the frontend application directory:
+1. Clone the repository.
+2. Run: npm install
+3. Create a .env file and populate with the following:
+
+TZ=UTC<br/>
+PORT=3333<br/>
+HOST=localhost<br/>
+LOG_LEVEL=info<br/>
+APP_KEY=qFlFnOw4MsxVSTajLUuothM9m_oPu7jp<br/>
+NODE_ENV=development
+
+4. Create a tmp folder in the root directory
+5. Run: node ace migration:run
+6. Run: node ace db:seed
+7. Run: npm run dev
+
+The development server for the back end should be up and running. Do not make any changes here. Create a separate directory for the front end. If you try to access thes '/users' endpoint, you should see the seeded user provided.
+
+### FRONTEND SETUP
+
+1. Setup the backend as instructed above.
+
+2. Once inside the hansecom-frontend-challenge directory, navigate to the frontend project directory:
    ```bash
    cd hansecom-frontend-app
    ```
-5. Install the frontend dependencies:
+3. Install the necessary dependencies:
    ```bash
    npm install
    ```
@@ -155,8 +151,8 @@ This project is designed to demonstrate the capabilities of a full-stack applica
   - **Method**: DELETE
   - **Endpoint**: `http://localhost:3333/orders/:id`
 
-## Notes
+## Notes while doing the challenge
 
-- The endpoint for getting a user by ID has a typo; it should be `/user/:id`.
+- The endpoint for getting a user by ID had a typo; it should be `/user/:id`.
 - The "create order" API expects the key `user` instead of `userId`.
-- The `env.example` file has been removed. Please use the credentials from the original repository.
+- The `env.example` file has been removed. Please follow the README instructions.
