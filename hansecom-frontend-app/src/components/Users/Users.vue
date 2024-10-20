@@ -2,12 +2,18 @@
 <!-- <script setup lang="ts"></script> -->
 
 <template>
-  <div class="text-center text-2xl"><RouterLink to="/">Home</RouterLink></div>
-  <div class="p-10">
+  <RouterLink :to="`/`">
+    <button
+      class="text-black outline outline-black text-xs hover:bg-orange-500 hover:text-white font-bold rounded p-1 ms-5 mt-5"
+    >
+      Home
+    </button>
+  </RouterLink>
+  <div class="p-10 h-full">
     <div class="flex justify-between">
       <h1 class="font-bold text-2xl"><span class="pi pi-user"></span> User List</h1>
       <button
-        class="text-white bg-black font-bold md:px-1 rounded p-2 ms-5"
+        class="text-white bg-hansecom-blue hover:bg-hansecom-cyan hover:text-white font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
         @click="openCreateModal()"
       >
         Create User
@@ -19,36 +25,42 @@
     <UserFilter :users="users" :onFilteredUsers="updateFilteredUsers" />
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     <ul role="list" class="divide-y divide-gray-100" v-else>
-      <li v-for="user in paginatedUsers" :key="user.id" class="flex justify-between gap-x-6 py-5">
-        <div class="flex min-w-0 gap-x-4">
+      <li
+        v-for="user in paginatedUsers"
+        :key="user.id"
+        class="flex justify-between gap-x-6 py-5 hover:bg-hansecom-cyan transition duration-200 ease-linear hover:text-white p-5 rounded"
+      >
+        <div class="flex min-w-0 gap-x-4 text-hansecom-blue hover:text-white w-3/4">
           <span class="pi pi-user"></span>
           <div class="min-w-0 flex-auto">
-            <p class="text-sm font-semibold leading-6 text-gray-900">{{ user.fullName }}</p>
-            <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+            <p class="text-sm font-semibold leading-6">
+              {{ user.fullName }}
+            </p>
+            <p class="mt-1 truncate text-xs leading-5 hidden md:block">
               {{ user.email }}
             </p>
           </div>
         </div>
         <div class="md:flex md:items-center flex">
-          <p class="hidden md:block mt-1 text-xs leading-5 text-gray-500">
+          <p class="hidden md:block mt-1 text-xs leading-5 text-hansecom-blue hover:text-white">
             Created
             <time datetime="2023-01-23T13:23Z">{{ new Date(user.createdAt).toDateString() }} </time>
           </p>
           <RouterLink :to="`orders/${user.id}`">
             <button
-              class="text-black outline outline-black text-xs hover:bg-orange-500 hover:text-white font-bold rounded p-1 ms-5"
+              class="text-hansecom-blue bg-hansecom-blue text-white hover:outline-none text-xs hover:bg-hansecom-orange font-bold rounded p-1 ms-5 transition duration-200 ease-linear"
             >
               orders
             </button>
           </RouterLink>
           <button
-            class="text-black hover:bg-yellow-500 hover:text-white font-bold md:px-1 rounded p-2 ms-5"
+            class="text-hansecom-blue hover:bg-hansecom-orange hover:text-white font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
             @click="openConfirmationModal(user.id, user.fullName, user.email, false)"
           >
             <span class="pi pi-user-edit"></span>
           </button>
           <button
-            class="text-black hover:text-white hover:bg-red-700 font-bold md:px-1 rounded p-2 ms-5"
+            class="text-hansecom-blue hover:text-white hover:bg-hansecom-red font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
             @click="openConfirmationModal(user.id, user.fullName, user.email, true)"
           >
             <span class="pi pi-trash"></span>
@@ -60,7 +72,7 @@
       <button
         :disabled="currentPage === 1"
         @click="goToPage(currentPage - 1)"
-        class="px-4 py-2 mx-1 bg-gray-200 hover:bg-gray-300 rounded"
+        class="px-4 py-2 mx-1 bg-white outline hover:bg-hansecom-cyan hover:text-white rounded transition duration-200 ease-linear"
       >
         Previous
       </button>
@@ -71,7 +83,12 @@
         @click="goToPage(page)"
         :class="[
           'px-4 py-2 mx-1 rounded',
-          { 'bg-blue-500 text-white': currentPage === page, 'bg-gray-200': currentPage !== page },
+          {
+            'px-4 py-2 mx-1 bg-white outline hover:bg-hansecom-orange hover:text-white rounded transition duration-200 ease-linear':
+              currentPage === page,
+            'px-4 py-2 mx-1 bg-white hover:bg-hansecom-green hover:text-white rounded transition duration-200 ease-linear':
+              currentPage !== page,
+          },
         ]"
       >
         {{ page }}
@@ -80,7 +97,7 @@
       <button
         :disabled="currentPage === totalPages"
         @click="goToPage(currentPage + 1)"
-        class="px-4 py-2 mx-1 bg-gray-200 hover:bg-gray-300 rounded"
+        class="px-4 py-2 mx-1 bg-white outline hover:bg-hansecom-cyan hover:text-white rounded transition duration-200 ease-linear"
       >
         Next
       </button>
@@ -109,7 +126,6 @@
 <script>
 import { mapState } from 'vuex'
 import Loader from '../Loader/Loader.vue'
-import CreateUserForm from './CreateUserForm/CreateUserForm.vue'
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal.vue'
 import CreateUserModal from '../CreateUserModal/CreateUserModal.vue'
 import UserFilter from './UserFilter/UserFilter.vue'
@@ -117,7 +133,6 @@ import UserFilter from './UserFilter/UserFilter.vue'
 export default {
   components: {
     Loader,
-    CreateUserForm,
     ConfirmationModal,
     CreateUserModal,
     UserFilter,
