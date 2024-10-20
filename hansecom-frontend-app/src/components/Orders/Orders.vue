@@ -1,7 +1,7 @@
 <template>
   <RouterLink :to="`/users`" class="px-5">
     <button
-      class="text-black outline outline-black text-xs hover:bg-orange-500 hover:text-white font-bold rounded p-1 ms-5"
+      class="text-black outline outline-black text-xs hover:bg-orange-500 hover:text-white hover:outline-none font-bold rounded p-1 ms-5 mt-5 transition duration-200 ease-linear"
     >
       back
     </button>
@@ -9,39 +9,40 @@
   <div class="p-10">
     <div class="flex justify-between">
       <h1 class="font-bold text-2xl">
-        <span class="pi pi-user"></span> {{ !error ? `${user?.full_name}'s orders` : null }}
+        <span class="pi pi-user"></span> {{ !error ? 'Order list' : '' }}
       </h1>
       <button
-        class="text-white bg-black font-bold md:px-1 rounded p-2 ms-5 hover:bg-blue-500"
+        class="text-white bg-hansecom-blue hover:bg-hansecom-cyan hover:text-white font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
         @click="openCreateModal()"
       >
         Order Item
       </button>
     </div>
-    <!-- Show loader if loading -->
-    <Loader v-if="isLoading && paginatedOrders.length" />
-    <!-- Show error message -->
     <OrderFilter :orders="orders" :onFilteredOrders="updateFilteredOrders" />
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <!-- Show loader if loading -->
+    <Loader v-if="isLoading" />
     <ul role="list" class="divide-y divide-gray-100" v-else>
+      <!-- Show error message -->
+      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
       <li
+        v-if="paginatedOrders.length"
         v-for="order in paginatedOrders"
         :key="order.id"
-        class="flex justify-between gap-x-6 py-5"
+        class="flex justify-between gap-x-6 py-5 hover:bg-hansecom-cyan transition duration-200 ease-linear hover:text-white p-5 rounded"
       >
-        <div class="flex min-w-0 gap-x-4">
+        <div class="flex min-w-0 gap-x-4 text-hansecom-blue hover:text-white w-3/4">
           <span class="pi pi-cart-arrow-down content-center text-4xl"></span>
           <div class="min-w-0 flex-auto">
-            <p class="font-semibold leading-6 text-gray-900">
+            <p class="font-semibold leading-6">
               {{ order.product }}
             </p>
-            <p class="mt-1 truncate text-xs leading-5 text-gray-500">
+            <p class="mt-1 truncate text-xs leading-5 text-gray-500 hover:text-white">
               Ordered by {{ user?.full_name }} - {{ user?.email }}
             </p>
           </div>
         </div>
         <div class="md:flex md:items-center flex">
-          <p class="hidden md:block mt-1 text-xs leading-5 text-gray-500">
+          <p class="hidden md:block mt-1 text-xs leading-5 text-gray-500 hover:text-white">
             Ordered on
             <time
               >{{
@@ -52,18 +53,21 @@
             </time>
           </p>
           <button
-            class="text-black hover:bg-yellow-500 hover:text-white font-bold md:px-1 rounded p-2 ms-5"
+            class="text-black hover:bg-hansecom-orange hover:text-white font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
             @click="openConfirmationModal(order.id, order.order_date, order.product, false)"
           >
             <span class="pi pi-box"></span>
           </button>
           <button
-            class="text-black hover:text-white hover:bg-red-700 font-bold md:px-1 rounded p-2 ms-5"
+            class="text-black hover:text-white hover:bg-hansecom-red font-bold md:px-1 rounded p-2 ms-5 transition duration-200 ease-linear"
             @click="openConfirmationModal(order.id, order.order_date, order.product, true)"
           >
             <span class="pi pi-trash"></span>
           </button>
         </div>
+      </li>
+      <li v-else class="text-center text-2xl text-hansecom-blue">
+        This user has no scheduled orders at the moment.
       </li>
     </ul>
 
@@ -71,7 +75,7 @@
       <button
         :disabled="currentPage === 1"
         @click="goToPage(currentPage - 1)"
-        class="px-4 py-2 mx-1 bg-gray-200 hover:bg-gray-300 rounded"
+        class="px-4 py-2 mx-1 bg-white outline hover:bg-hansecom-cyan hover:text-white rounded transition duration-200 ease-linear"
       >
         Previous
       </button>
@@ -82,7 +86,12 @@
         @click="goToPage(page)"
         :class="[
           'px-4 py-2 mx-1 rounded',
-          { 'bg-blue-500 text-white': currentPage === page, 'bg-gray-200': currentPage !== page },
+          {
+            'px-4 py-2 mx-1 bg-white outline hover:bg-hansecom-orange hover:text-white rounded transition duration-200 ease-linear':
+              currentPage === page,
+            'px-4 py-2 mx-1 bg-white hover:bg-hansecom-green hover:text-white rounded transition duration-200 ease-linear':
+              currentPage !== page,
+          },
         ]"
       >
         {{ page }}
@@ -91,7 +100,7 @@
       <button
         :disabled="currentPage === totalPages"
         @click="goToPage(currentPage + 1)"
-        class="px-4 py-2 mx-1 bg-gray-200 hover:bg-gray-300 rounded"
+        class="px-4 py-2 mx-1 bg-white outline hover:bg-hansecom-cyan hover:text-white rounded transition duration-200 ease-linear"
       >
         Next
       </button>

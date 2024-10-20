@@ -1,11 +1,18 @@
 <template>
-  <div class="modal" v-if="isVisible" @click="handleClickOutside">
-    <div class="modal-content">
-      <h2>
+  <div
+    class="modal fixed top-[-50vh] left-0 right-0 bottom-0 bg-black bg-opacity-50 flex justify-center items-center z-[1000] animate-fadeIn"
+    v-if="isVisible"
+    @click="handleClickOutside"
+  >
+    <div class="bg-white p-5 rounded-lg shadow-lg text-center">
+      <h2 class="my-5 text-hansecom-blue font-bold">
         {{ isDeleteAction ? (isUser ? 'Confirm Deletion' : 'Delete Order') : '' }}
       </h2>
 
-      <p v-if="isDeleteAction">
+      <p
+        v-if="isDeleteAction"
+        class="block text-gray-500 font-bold md:text-right mb-1 md:mb-5 pr-4"
+      >
         {{
           isUser
             ? 'Are you sure you want to delete this user?'
@@ -13,36 +20,79 @@
         }}
       </p>
       <div v-else>
-        <p class="mb-5 text-center">{{ isUser ? 'Edit User' : 'Edit Order' }}</p>
+        <h2 class="my-5 text-hansecom-blue font-bold">{{ isUser ? 'Edit User' : 'Edit Order' }}</h2>
 
-        <div v-if="!isDeleteAction && isUser" class="flex flex-col">
-          <label class="py-5">
-            Full Name:
-            <input v-model="localFullName" type="text" />
-          </label>
-          <label>
-            Email:
-            <input v-model="localEmail" type="email" />
-          </label>
+        <div v-if="!isDeleteAction && isUser" class="md:flex md:items-center mb-6">
+          <div class="md:w-1/3">
+            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+              Full Name:
+            </label>
+          </div>
+          <div v-if="!isDeleteAction && isUser" class="md:w-2/3">
+            <input
+              v-model="localFullName"
+              type="text"
+              class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-hansecom-cyan"
+            />
+          </div>
         </div>
-
-        <div v-if="!isDeleteAction && !isUser" class="flex flex-col">
-          <label class="py-5">
-            Order Date:
-            <input v-model="localOrderDate" type="date" />
-          </label>
-          <label>
-            Product:
-            <input v-model="localProduct" type="text" />
-          </label>
+        <div v-if="!isDeleteAction && isUser" class="md:flex md:items-center mb-6">
+          <div class="md:w-1/3">
+            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+              Email:
+            </label>
+          </div>
+          <div v-if="!isDeleteAction && isUser" class="md:w-2/3">
+            <input
+              v-model="localEmail"
+              type="email"
+              class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-hansecom-cyan"
+            />
+          </div>
+        </div>
+        <div v-if="!isDeleteAction && !isUser" class="md:flex md:items-center mb-6">
+          <div class="md:w-1/3">
+            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+              Order Date:
+            </label>
+          </div>
+          <div v-if="!isDeleteAction && !isUser" class="md:w-2/3">
+            <input
+              v-model="localOrderDate"
+              type="date"
+              class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-hansecom-cyan"
+            />
+          </div>
+        </div>
+        <div v-if="!isDeleteAction && !isUser" class="md:flex md:items-center mb-6">
+          <div class="md:w-1/3">
+            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
+              Product:
+            </label>
+          </div>
+          <div v-if="!isDeleteAction && !isUser" class="md:w-2/3">
+            <input
+              class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-hansecom-orange"
+              v-model="localProduct"
+              type="text"
+            />
+          </div>
         </div>
       </div>
 
       <div class="modal-actions">
-        <button @click="confirmAction">
+        <button
+          @click="confirmAction"
+          class="bg-hansecom-cyan hover:bg-hansecom-green text-white font-bold py-2 px-4 ms-5 rounded"
+        >
           {{ isDeleteAction ? 'Delete' : 'Edit' }}
         </button>
-        <button @click="cancelAction">Cancel</button>
+        <button
+          class="bg-hansecom-cyan hover:bg-hansecom-red text-white font-bold py-2 px-4 ms-5 rounded"
+          @click="cancelAction"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   </div>
@@ -150,48 +200,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.modal {
-  position: fixed;
-  animation: fadeIn 1s;
-  top: -50vh;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-button:hover {
-  background-color: #f0f0f0;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-</style>
