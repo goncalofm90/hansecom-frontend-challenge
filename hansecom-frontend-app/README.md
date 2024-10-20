@@ -36,8 +36,6 @@ NODE_ENV=development
 6. Run: node ace db:seed
 7. Run: npm run dev
 
-The development server for the back end should be up and running. Do not make any changes here. Create a separate directory for the front end. If you try to access thes '/users' endpoint, you should see the seeded user provided.
-
 ### FRONTEND SETUP
 
 1. Setup the backend as instructed above.
