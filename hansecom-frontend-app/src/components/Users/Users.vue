@@ -20,11 +20,11 @@
       </button>
     </div>
     <!-- Show loader if loading -->
-    <Loader v-if="isLoading && paginatedUsers.length" />
     <!-- Show error message -->
     <UserFilter :users="users" :onFilteredUsers="updateFilteredUsers" />
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <Loader v-if="isLoading && paginatedUsers.length" />
     <ul role="list" class="divide-y divide-gray-100" v-else>
+      <p v-if="errorMessage" class="error text-hansecom-red">{{ errorMessage }}</p>
       <li
         v-for="user in paginatedUsers"
         :key="user.id"

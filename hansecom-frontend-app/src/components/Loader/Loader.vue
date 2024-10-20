@@ -1,7 +1,9 @@
 <template>
-  <div class="loader">
-    <div class="spinner"></div>
-    <p>Loading...</p>
+  <div class="loader flex flex-col items-center justify-center bg-white bg-opacity-80">
+    <div
+      class="spinner border-8 border-gray-200 border-t-8 border-t-hansecom-cyan rounded-full w-12 h-12 animate-spin"
+    ></div>
+    <p class="text-xs font-bold text-hansecom-orange">Loading...</p>
   </div>
 </template>
 
@@ -10,29 +12,3 @@ export default {
   name: 'Loader',
 }
 </script>
-
-<style scoped>
-.loader {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-}
-.spinner {
-  border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 50px; /* Size of the spinner */
-  height: 50px; /* Size of the spinner */
-  animation: spin 2s linear infinite; /* Animation */
-}
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-</style>
