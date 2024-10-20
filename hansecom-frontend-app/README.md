@@ -1,5 +1,162 @@
-# Vue 3 + TypeScript + Vite
+# Hansecom Frontend Challenge
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+# ENV
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+TZ=UTC<br/>
+PORT=3333<br/>
+HOST=localhost<br/>
+LOG_LEVEL=info<br/>
+APP_KEY=qFlFnOw4MsxVSTajLUuothM9m_oPu7jp<br/>
+NODE_ENV=development
+
+4. Create a tmp folder in the root directory
+5. Run: node ace migration:run
+6. Run: node ace db:seed
+7. Run: npm run dev
+
+## Project Overview
+
+This project is designed to demonstrate the capabilities of a full-stack application using Vue.js for the frontend and a Node.js backend. The frontend leverages Tailwind CSS for styling, Axios for API requests, VueX for state management, and Vue Router for routing.
+
+## Technology Stack
+
+- **Styling**: Tailwind CSS & Prime Icons
+- **API Requests**: Axios
+- **State Management**: VueX
+- **Routing**: Vue Router
+- **Node Version**: 21.7.3
+
+## Getting Started
+
+### Prerequisites
+
+- Ensure that you have Node.js version **20.2 or above** installed to avoid any "badengine" errors.
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/hansecom-frontend-challenge.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd hansecom-frontend-challenge
+   ```
+3. Install the backend dependencies:
+   ```bash
+   npm install
+   ```
+4. Move into the frontend application directory:
+   ```bash
+   cd hansecom-frontend-app
+   ```
+5. Install the frontend dependencies:
+   ```bash
+   npm install
+   ```
+
+### Running the Application
+
+1. Start the backend server:
+   ```bash
+   npm run dev
+   ```
+2. Open a new terminal tab and start the frontend development server:
+   ```bash
+   npm run dev
+   ```
+
+### Access the Application
+
+- **Frontend Host**: [http://localhost:5173/](http://localhost:5173/)
+- **Backend Host**: [http://localhost:3333/](http://localhost:3333/)
+
+## API Endpoints
+
+### Users
+
+- **Get all users**
+
+  - **Method**: GET
+  - **Endpoint**: `http://localhost:3333/users`
+
+- **Create a new user**
+
+  - **Method**: POST
+  - **Endpoint**: `http://localhost:3333/users`
+  - **Expected body**:
+    ```json
+    {
+      "fullName": "string",
+      "email": "string",
+      "password": "string"
+    }
+    ```
+
+- **Get user by ID**
+
+  - **Method**: GET
+  - **Endpoint**: `http://localhost:3333/user/:id`
+
+- **Update user**
+
+  - **Method**: PUT
+  - **Endpoint**: `http://localhost:3333/user/:id/edit`
+  - **Expected body**:
+    ```json
+    {
+      "fullName": "string",
+      "email": "string"
+    }
+    ```
+
+- **Delete user**
+  - **Method**: DELETE
+  - **Endpoint**: `http://localhost:3333/users/:id`
+
+### Orders
+
+- **Get orders by user ID**
+
+  - **Method**: GET
+  - **Endpoint**: `http://localhost:3333/orders/:id`
+
+- **Create order**
+
+  - **Method**: POST
+  - **Endpoint**: `http://localhost:3333/orders`
+  - **Expected body**:
+    ```json
+    {
+      "user": "string",
+      "orderDate": "date",
+      "product": "string"
+    }
+    ```
+
+- **Get order by ID**
+
+  - **Method**: GET
+  - **Endpoint**: `http://localhost:3333/order/:id`
+
+- **Update order**
+
+  - **Method**: PUT
+  - **Endpoint**: `http://localhost:3333/order/:id/edit`
+  - **Expected body**:
+    ```json
+    {
+      "orderDate": "date",
+      "product": "string"
+    }
+    ```
+
+- **Delete order**
+  - **Method**: DELETE
+  - **Endpoint**: `http://localhost:3333/orders/:id`
+
+## Notes
+
+- The endpoint for getting a user by ID has a typo; it should be `/user/:id`.
+- The "create order" API expects the key `user` instead of `userId`.
+- The `env.example` file has been removed. Please use the credentials from the original repository.
