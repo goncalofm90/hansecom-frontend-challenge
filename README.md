@@ -53,10 +53,13 @@ The development server for the back end should be up and running.
 
 ### Running the Application
 
+Now we Cd back into hansecom-frontend-challenge to run the backend.
+
 1. Start the backend server:
    ```bash
    npm run dev
    ```
+   Once running, we cd again into hansecom-frontend-app.
 2. Open a new terminal tab and start the frontend development server:
    ```bash
    npm run dev
