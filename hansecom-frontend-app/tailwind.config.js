@@ -40,7 +40,7 @@ export default {
       },
       fontFamily: {
         // Custom font families
-        sans: ['Helvetica', 'Arial', 'sans-serif'],
+        sans: ['Overpass', 'Helvetica', 'Arial', 'sans-serif'],
         serif: ['Georgia', 'Times New Roman', 'serif'],
         mono: ['Menlo', 'Monaco', 'Courier New', 'monospace'],
       },

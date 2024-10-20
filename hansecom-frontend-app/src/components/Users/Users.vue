@@ -4,7 +4,7 @@
 <template>
   <RouterLink :to="`/`">
     <button
-      class="text-black outline outline-black text-xs hover:bg-orange-500 hover:text-white font-bold rounded p-1 ms-5 mt-5"
+      class="text-black outline outline-black text-xs hover:bg-orange-500 hover:text-white hover:outline-none font-bold rounded p-1 ms-5 mt-5 transition duration-200 ease-linear"
     >
       Home
     </button>

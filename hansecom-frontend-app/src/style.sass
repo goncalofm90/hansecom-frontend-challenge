@@ -2,8 +2,18 @@
 @tailwind components
 @tailwind utilities
 @import 'primeicons/primeicons.css'
+@layer base
+  @font-face
+    font-family: Overpass
+    src: url('src/assets/fonts/overpass/Overpass-regular.woff') format('woff')
+     font-weight: 400
+    font-style:  normal
+
+
 
 body,
 html
   margin: 0
   height: 100vh
+  font-family: 'Overpass', sans-serif
+
